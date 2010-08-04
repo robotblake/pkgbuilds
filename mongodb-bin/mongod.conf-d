@@ -1,0 +1,7 @@
+#
+# Parameters to be passed to mongodb
+#
+BIND_IP="127.0.0.1"
+DBPATH="/var/lib/mongodb"
+LOGPATH="/var/log/mongod.log"
+INITOPTS="--bind_ip $BIND_IP --dbpath $DBPATH --logpath $LOGPATH --logappend"

@@ -1,0 +1,41 @@
+#!/bin/bash
+
+. /etc/rc.conf
+. /etc/rc.d/functions
+. /etc/conf.d/mongod
+
+PID=`cat $DBPATH/mongod.lock 2>/dev/null`
+case "$1" in
+	start)
+		stat_busy "Starting MongoDB"
+
+		[[ -d $DBPATH ]] || { mkdir -p $DBPATH && chown -R mongod:daemon $DBPATH; }
+		[[ -e $LOGPATH ]] || { touch $LOGPATH && chown mongod:daemon $LOGPATH; }
+		[[ -z $PID ]] && su - mongod -c "/usr/bin/mongod $INITOPTS --fork" 1>/dev/null
+
+		if [ $? -gt 0 ]; then
+			stat_fail
+		else
+			add_daemon mongod
+			stat_done
+		fi
+		;;
+	stop)
+		stat_busy "Stopping MongoDB"
+
+		[[ -z $PID ]] || kill -TERM $PID &>/dev/null
+
+		if [ $? -gt 0 ]; then
+			stat_fail
+		else
+			rm_daemon mongod
+			stat_done
+		fi
+		;;
+	restart)
+		$0 stop; sleep 3; $0 start
+		;;
+	*)
+		echo "usage: $0 {start|stop|restart}"
+esac
+exit 0

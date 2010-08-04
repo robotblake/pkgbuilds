@@ -1,0 +1,14 @@
+post_install() {
+	useradd -r -g daemon -d /var/lib/mongodb -s /bin/bash mongod
+	chown -R mongod:daemon /var/lib/mongodb
+}
+
+post_upgrade() {
+	chown -R mongod:daemon /var/lib/mongodb
+}
+
+pre_remove() {
+	/etc/rc.d/mongod stop
+	sleep 3
+	userdel mongod
+}
