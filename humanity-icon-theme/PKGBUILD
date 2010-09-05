@@ -1,0 +1,20 @@
+# Maintainer: Blake Imsland <blake@retroco.de>
+
+pkgname=humanity-icon-theme
+pkgver=0.5.3
+pkgrel=1
+pkgdesc="Default icon theme for Ubuntu"
+arch=(any)
+depends=('gnome-icon-theme' 'librsvg')
+url="http://launchpad.net/humanity"
+license=('GPL')
+install=${pkgname}.install
+source=(http://launchpad.net/ubuntu/+archive/primary/+files/${pkgname}_${pkgver}.tar.gz)
+md5sums=('f768d6d534a3e81c2195791983d25dac')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  mkdir -p ${pkgdir}/usr/share/icons || return 1
+  cp -r Humanity Humanity-Dark ${pkgdir}/usr/share/icons || return 1
+  rm ${pkgdir}/usr/share/icons/{Humanity,Humanity-Dark}/COPYING || return 1
+}

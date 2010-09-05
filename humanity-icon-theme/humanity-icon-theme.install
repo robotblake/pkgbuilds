@@ -1,0 +1,14 @@
+post_install() {
+  gtk-update-icon-cache -q -t -f usr/share/icons/Humanity
+  gtk-update-icon-cache -q -t -f usr/share/icons/Humanity-Dark
+}
+
+post_upgrade() {
+  gtk-update-icon-cache -q -t -f usr/share/icons/Humanity
+  gtk-update-icon-cache -q -t -f usr/share/icons/Humanity-Dark
+}
+
+post_remove() {
+  gtk-update-icon-cache -q -t -f usr/share/icons/Humanity
+  gtk-update-icon-cache -q -t -f usr/share/icons/Humanity-Dark
+}
