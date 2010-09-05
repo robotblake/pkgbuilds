@@ -4,13 +4,17 @@
 . /etc/rc.d/functions
 . /etc/conf.d/mongod
 
-PID=`cat $DBPATH/mongod.lock 2>/dev/null`
+OLDPID=`cat $DBPATH/mongod.lock 2>/dev/null`
+ACTIVE=0
 case "$1" in
 	start)
 		stat_busy "Starting MongoDB"
 
 		[[ -d $DBPATH ]] || { mkdir -p $DBPATH && chown -R mongod:daemon $DBPATH; }
 		[[ -e $LOGPATH ]] || { touch $LOGPATH && chown mongod:daemon $LOGPATH; }
+		for PID in `pidof mongod`; do
+			[[ $PID -eq $OLDPID ]] && ACTIVE=1
+		done
 		[[ -z $PID ]] && su - mongod -c "/usr/bin/mongod $INITOPTS --fork" 1>/dev/null
 
 		if [ $? -gt 0 ]; then
@@ -23,6 +27,9 @@ case "$1" in
 	stop)
 		stat_busy "Stopping MongoDB"
 
+		for PID in `pidof mongod`; do
+			[[ $PID -eq $OLDPID ]] && ACTIVE=1
+		done
 		[[ -z $PID ]] || kill -TERM $PID &>/dev/null
 
 		if [ $? -gt 0 ]; then
