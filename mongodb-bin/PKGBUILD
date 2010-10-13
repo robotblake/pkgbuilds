@@ -2,10 +2,10 @@
 
 pkgname=mongodb-bin
 _pkgname=mongodb
-pkgver=1.6.2
+pkgver=1.6.3
 pkgrel=1
 pkgdesc='A high-performance, open source, schema-free document-oriented database.'
-arch=('i686' 'x86_64')
+arch=('i686')
 url='http://www.mongodb.org'
 license=('AGPL')
 depends=('bash' 'gcc-libs')
@@ -16,24 +16,22 @@ source=("http://fastdl.mongodb.org/linux/$_pkgname-linux-$arch-$pkgver.tgz"
         'mongod.rc-d'
         'mongod.conf-d')
 install=mongodb.install
-md5sums=('3ce4485494806648404e1ee96c223ec6'
+md5sums=('e3f86967082c3d657dee778fac27394f'
          '228c78c287254b6d4042c3e91970e4b8'
          'a17f89a8c4faf0b3d6b307d7f3345d0a')
 
 build() {
 	cd $srcdir/$_pkgname-linux-$arch-$pkgver
-	#[[ ! -d lib64 ]] || mv lib64 lib
 }
 
 package() {
 	cd $srcdir/$_pkgname-linux-$arch-$pkgver
 
 	install -d $pkgdir/{usr,var/lib/mongodb}
-	#find include/ -type f -exec chmod 0644 {} \;
-	#cp -r bin include lib $pkgdir/usr
 	cp -r bin $pkgdir/usr
 	rm $pkgdir/usr/bin/mongosniff
 
 	install -D -m644 $srcdir/mongod.conf-d $pkgdir/etc/conf.d/mongod
 	install -D -m755 $srcdir/mongod.rc-d   $pkgdir/etc/rc.d/mongod
 }
+
