@@ -1,7 +1,7 @@
 # Maintainer: Blake Imsland <blake@retroco.de>
 
 pkgname=light-themes
-pkgver=0.1.7
+pkgver=0.1.8.2
 pkgrel=1
 pkgdesc="Light themes from Ubuntu"
 arch=(any)
@@ -9,10 +9,10 @@ depends=('humanity-icon-theme' 'gtk-engine-murrine-git>=20100904-1')
 url="http://launchpad.net/light-themes"
 license=('GPL')
 source=(http://launchpad.net/ubuntu/+archive/primary/+files/${pkgname}_${pkgver}.tar.gz)
-md5sums=('028370c23d6abaf79f6501809e90bd59')
+md5sums=('26a22d97e66076a61a62e4a407bf2091')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   mkdir -p ${pkgdir}/usr/share/themes || return 1
-  cp -r Ambiance Radiance ${pkgdir}/usr/share/themes || return 1
+  cp -r Ambiance Ambiance-CSD Radiance ${pkgdir}/usr/share/themes || return 1
 }
